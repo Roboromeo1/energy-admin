@@ -1,4 +1,8 @@
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 
 class PQcurve:
     def __init__(self, OEM, Smva, pqcurve_excelfile, temperature):
@@ -32,7 +36,7 @@ class PQcurve:
         Configure PQ curve by selecting P, Q, and V columns.
         """
         if self.OEM_PQ_curve is not None:
-            self.OEM_PQ_curve = self.OEM_PQ_curve[['P', 'Q', 'V']].head()
+            self.OEM_PQ_curve = self.OEM_PQ_curve[['P', 'Q', 'V']]
         else:
             print("No data loaded. Use load_PQcurve method first.")
 
@@ -40,7 +44,17 @@ class PQcurve:
         """
         Plot PQ curve.
         """
-        pass  # Placeholder for plot implementation
+        if self.OEM_PQ_curve is not None:
+            plt.figure(figsize=(8, 6))
+            plt.plot(self.OEM_PQ_curve['P'], self.OEM_PQ_curve['Q'], marker='o', linestyle='-')
+            plt.title('PQ Curve')
+            plt.xlabel('Active Power (P)')
+            plt.ylabel('Reactive Power (Q)')
+            plt.grid(True)
+            # plt.show()
+            plt.savefig('pq_curve_plot.png')
+        else:
+            print("No data loaded. Use load_PQcurve method first.")
 
 
 class S5252_harmonics_emmision_limits:
